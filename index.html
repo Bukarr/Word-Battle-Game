@@ -650,7 +650,7 @@
 
             try {
                 // Call Supabase Edge Function for AI generation
-                const { data, error } = await supabase.functions.invoke('socialai-openai', {
+                const { data, error } = await supabase.functions.invoke('socialai-groqai', {
                     body: {
                         prompt: prompt,
                         platform: selectedPlatform,
