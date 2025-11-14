@@ -532,6 +532,54 @@
                 grid-template-columns: repeat(4, 1fr);
             }
         }
+
+body {
+    padding-bottom: 70px; /* Add padding to body equal to navbar height */
+}
+
+.app-container {
+    padding-bottom: 70px; /* Additional safety padding */
+}
+
+.sections-container {
+    overflow-y: auto;
+    max-height: calc(100vh - 200px); /* Adjust based on your header height */
+}
+
+/* Ensure mobile nav stays on top of everything */
+.mobile-nav {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: white;
+    border-top: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-around;
+    padding: 10px 0;
+    z-index: 1000;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
+    height: 70px; /* Fixed height */
+}
+
+/* Adjust section padding to account for fixed navbar */
+.section {
+    display: none;
+    padding: 1rem;
+    padding-bottom: 80px; /* Space for mobile nav */
+    overflow-y: auto;
+}
+
+.section.active {
+    display: block;
+}
+
+/* Fix for iOS Safari */
+@supports (-webkit-touch-callout: none) {
+    .section {
+        padding-bottom: 100px; /* Extra space for iOS */
+    }
+    }
     </style>
 </head>
 <body>
@@ -1918,6 +1966,25 @@
             }
         `;
         document.head.appendChild(style);
+
+        
+function preventScrollBehindNav() {
+    const sections = document.querySelectorAll('.section');
+    const navHeight = document.querySelector('.mobile-nav').offsetHeight;
+    
+    sections.forEach(section => {
+        section.style.maxHeight = `calc(100vh - ${navHeight + 100}px)`;
+        section.style.overflowY = 'auto';
+    });
+}
+
+// Call this function after DOM content loaded
+document.addEventListener('DOMContentLoaded', function() {
+    preventScrollBehindNav();
+    
+    // Re-calculate on window resize
+    window.addEventListener('resize', preventScrollBehindNav);
+});
     </script>
 </body>
 </html>
